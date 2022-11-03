@@ -16,7 +16,8 @@ function initServer() {
   try {
     initServer();
   } catch (err) {
+    console.log(")===================YOOOOOO");
     console.error(err);
-    process.exit();
+    process.exit(1);
   }
 })();

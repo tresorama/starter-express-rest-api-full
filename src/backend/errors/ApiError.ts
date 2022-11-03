@@ -1,4 +1,4 @@
-import { ErrorForClient } from "../middlewares/clientErrorHandler.middleware";
+import { ErrorForClient } from "@/middlewares/client-error-handler.middleware";
 
 /**
  * Class that define ApiError Object
@@ -22,5 +22,13 @@ export class ApiError extends ErrorForClient {
 
   static unauthorized() {
     return new ApiError(401, "Forbidden access, you must be authorized.");
+  }
+
+  static unexpected() {
+    return new ApiError(500, "Unexpected error.");
+  }
+
+  static notFound() {
+    return new ApiError(404, 'Not Found');
   }
 }

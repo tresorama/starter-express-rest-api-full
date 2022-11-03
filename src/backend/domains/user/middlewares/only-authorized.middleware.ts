@@ -1,8 +1,8 @@
 import type { Request, Response, NextFunction } from "express";
-import { Store_User } from "../user.model";
-import { ApiError } from "@/errors/ApiError";
-import { decodeAuthTokenJWT } from "../utilities/authTokenJWT";
 import { omit } from "lodash";
+import { ApiError } from "@/errors/ApiError";
+import { Store_User } from "../user.model";
+import { decodeAuthTokenJWT } from "../utilities/auth-token-JWT";
 
 export const onlyAuthorized = async (
   req: Request,
@@ -10,7 +10,7 @@ export const onlyAuthorized = async (
   next: NextFunction
 ) => {
   try {
-    // parse autorization header
+    // parse authorization header
     const { authorization } = req.headers;
 
     // check that Bearer Authorization is set
@@ -20,7 +20,7 @@ export const onlyAuthorized = async (
 
     // check user
     const token = authorization.split(" ")[1];
-    const { id } = decodeAuthTokenJWT(token) as { id: string };
+    const { id } = decodeAuthTokenJWT(token) as { id: string; };
     const user = await Store_User.findOne({ where: { id } });
     if (!user) {
       throw new Error();
@@ -32,6 +32,6 @@ export const onlyAuthorized = async (
     // go on in middleware chain
     next();
   } catch (error) {
-    throw ApiError.unauthorized();
+    return next(ApiError.unauthorized());
   }
 };

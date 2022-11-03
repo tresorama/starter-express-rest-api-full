@@ -1,7 +1,8 @@
 import type { RequestHandler } from "express";
-import { NotFoundError } from "@/errors/NotFoundError";
+import { ApiError } from "@/errors/ApiError";
+
 /**
- * Express MMiddleware that trigger
+ * Express Middleware that trigger
  * an error indicating that the resource is not found
  * @param req Express Request
  * @param res Express Response
@@ -10,5 +11,5 @@ import { NotFoundError } from "@/errors/NotFoundError";
 export const notFound: RequestHandler = (req, res, next) => {
   // if code arrives here means
   // that no one has handled the request
-  throw new NotFoundError();
+  return next(ApiError.notFound());
 };

@@ -1,19 +1,17 @@
 import express from "express";
-import asyncHandler from "express-async-handler";
-import { onlyAuthorized } from "./middlewares/onlyAuthorized";
+import { onlyAuthorized } from "./middlewares/only-authorized.middleware";
 import { getUserData, loginUser, registerUser } from "./user.controllers";
-const router = express.Router();
+
+export const router = express.Router();
 
 router.get("/", (req, res) => {
   res.json({ message: "Hello from user api !" });
 });
 
-router.post("/login", asyncHandler(loginUser));
-router.post("/register", asyncHandler(registerUser));
+router.post("/login", loginUser);
+router.post("/register", registerUser);
 router.post(
   "/get-user-data",
-  asyncHandler(onlyAuthorized),
-  asyncHandler(getUserData)
+  onlyAuthorized,
+  getUserData
 );
-
-export default router;

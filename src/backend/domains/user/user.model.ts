@@ -1,13 +1,13 @@
-import type { User, CreatableUser } from "./user.types.d";
+import type { User, CreatableUser } from "./user.types";
 import { fakeDb } from "./user.db";
+import { generateRandomId } from "@/utilities/randomId";
 import { objectContainsFields } from "@/utilities/object";
-import { generateRandomId } from "./utilities/randomId";
 
 /**
  * User model, has direct access to the User persistent store (DB).
  */
 export const Store_User = {
-  findOne: async ({ where }: { where: Partial<User> }) => {
+  findOne: async ({ where }: { where: Partial<User>; }) => {
     return fakeDb.find((item) => objectContainsFields(item, where));
   },
   createOne: async (userData: CreatableUser) => {

@@ -1,4 +1,4 @@
-import { UserWithoutSensitive } from "../domains/user/user.types.d";
+import { UserWithoutSensitive } from "../domains/user/user.types";
 
 declare global {
   namespace Express {

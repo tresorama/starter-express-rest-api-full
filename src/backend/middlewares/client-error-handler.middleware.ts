@@ -1,4 +1,5 @@
 import type { ErrorRequestHandler } from "express";
+import { IS_DEVELOPMENT } from "@/constants";
 
 /**
  * Class used to instanciate an Error Object
@@ -32,7 +33,6 @@ export const clientErrorHandler: ErrorRequestHandler = async (
   res,
   next
 ) => {
-  const isDevelopment = () => process.env.NODE_ENV === "development";
   const logErrorStackTrace = () => {
     console.log("Error stack trace:");
     console.error(err);
@@ -46,20 +46,17 @@ export const clientErrorHandler: ErrorRequestHandler = async (
   };
   const sendResponseToClient = () => {
     // Respond accordingly to the "Accept" HTTP header of the request,
-    // Usally this means:
-    // «Resond with the same format of the request»
-
+    // Usually this means:
+    // «Respond with the same format of the request»
     res.format({
       json: function () {
         res.status(exitStatusCode);
         res.send({ message: exitMessage });
       },
-
       text: function () {
         res.status(exitStatusCode);
         res.send(exitMessage);
       },
-
       html: function () {
         res.status(exitStatusCode);
         res.send(`<p>${exitMessage}</p>`);
@@ -84,8 +81,8 @@ export const clientErrorHandler: ErrorRequestHandler = async (
   }
 
   // In develoopment only log the error trace
-  if (isDevelopment()) logErrorStackTrace();
-  // Send response to client
+  if (IS_DEVELOPMENT) logErrorStackTrace();
+  // In every env send response to client
   logResponseToClient();
   sendResponseToClient();
 };
